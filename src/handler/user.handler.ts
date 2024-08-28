@@ -15,6 +15,18 @@ const PaginationSchema = z.object({
   page: z.string().regex(/^\d+$/).transform(Number).default('10'),
 });
 
+type GETResponse = {
+  page: number;
+  total: number;
+  limit: number;
+  skip: number;
+  data: any;
+};
+
+function response(obj: GETResponse): GETResponse {
+  return obj;
+}
+
 export async function getAllVehicleBrand(
   req: Request,
   res: Response,
@@ -34,6 +46,7 @@ export async function getAllVehicleBrand(
 
   return res.json({
     total: total[0].count,
+    page,
     limit,
     skip: offset,
     data: brands,
@@ -66,16 +79,58 @@ export async function getAllVehicleTypes(
   const limit = req.query.limit ? Number(req.query.limit) : 10;
   const page = req.query.page ? Number(req.query.page) : 1;
   const offset = (page - 1) * limit;
+  const brandId = req.query.brandId ? Number(req.query.brandId) : undefined;
+
+  if (brandId) {
+    const types = await db
+      .select()
+      .from(vehicleType)
+      .where(eq(vehicleType.brandId, brandId))
+      .limit(limit)
+      .offset(offset);
+    const total = await db
+      .select({ count: count() })
+      .from(vehicleType)
+      .where(eq(vehicleType.brandId, brandId));
+    return res.json(
+      response({
+        total: total[0].count,
+        page,
+        limit,
+        skip: offset,
+        data: types,
+      })
+    );
+  }
 
   const types = await db.select().from(vehicleType).limit(limit).offset(offset);
-
   const total = await db.select({ count: count() }).from(vehicleType);
+  return res.json(
+    response({
+      total: total[0].count,
+      page,
+      limit,
+      skip: offset,
+      data: types,
+    })
+  );
+}
+
+export async function getVehicleTypeById(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const id = Number(req.params.id);
+
+  const type = await db
+    .select()
+    .from(vehicleType)
+    .where(eq(vehicleType.id, id))
+    .limit(1);
 
   return res.json({
-    total: total[0].count,
-    limit,
-    skip: offset,
-    data: types,
+    data: type,
   });
 }
 
@@ -98,9 +153,28 @@ export async function getAllVehicleModels(
 
   return res.json({
     total: total[0].count,
+    page,
     limit,
     skip: offset,
     data: models,
+  });
+}
+
+export async function getVehicleModelById(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const id = Number(req.params.id);
+
+  const model = await db
+    .select()
+    .from(vehicleModel)
+    .where(eq(vehicleModel.id, id))
+    .limit(1);
+
+  return res.json({
+    data: model,
   });
 }
 
@@ -119,9 +193,28 @@ export async function getAllVehicleYears(
 
   return res.json({
     total: total[0].count,
+    page,
     limit,
     skip: offset,
     data: years,
+  });
+}
+
+export async function getVehicleYearById(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const id = Number(req.params.id);
+
+  const year = await db
+    .select()
+    .from(vehicleYear)
+    .where(eq(vehicleYear.id, id))
+    .limit(1);
+
+  return res.json({
+    data: year,
   });
 }
 
@@ -144,6 +237,7 @@ export async function getPricelists(
 
   return res.json({
     total: total[0].count,
+    page,
     limit,
     skip: offset,
     data: priceLists,

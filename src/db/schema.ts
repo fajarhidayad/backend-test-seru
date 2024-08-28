@@ -8,6 +8,7 @@ import {
   integer,
   numeric,
   smallint,
+  unique,
 } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
@@ -41,7 +42,7 @@ export const vehicleBrandRelations = relations(vehicleBrand, ({ many }) => ({
 
 export const vehicleType = pgTable('vehicle_type', {
   id: serial('id').primaryKey().notNull(),
-  name: varchar('name', { length: 255 }).notNull().unique(),
+  name: varchar('name', { length: 255 }).notNull(),
   brandId: integer('brand_id')
     .references(() => vehicleBrand.id)
     .notNull(),
@@ -63,7 +64,7 @@ export const vehicleTypeRelations = relations(vehicleType, ({ one, many }) => ({
 
 export const vehicleModel = pgTable('vehicle_model', {
   id: serial('id').primaryKey().notNull(),
-  name: varchar('name', { length: 255 }).notNull().unique(),
+  name: varchar('name', { length: 255 }).notNull(),
   typeId: integer('type_id')
     .references(() => vehicleType.id)
     .notNull(),
@@ -86,23 +87,29 @@ export const vehicleModelRelations = relations(
   })
 );
 
-export const pricelist = pgTable('pricelist', {
-  id: serial('id').primaryKey().notNull(),
-  code: varchar('code', { length: 255 }).notNull(),
-  price: numeric('price').notNull(),
-  yearId: integer('year_id')
-    .references(() => vehicleType.id)
-    .notNull(),
-  modelId: integer('model_id')
-    .references(() => vehicleModel.id)
-    .notNull(),
-  createdAt: timestamp('created_at', { mode: 'string' }).$default(() =>
-    new Date().toDateString()
-  ),
-  updatedAt: timestamp('updated_at', { mode: 'string' }).$onUpdate(() =>
-    new Date().toDateString()
-  ),
-});
+export const pricelist = pgTable(
+  'pricelist',
+  {
+    id: serial('id').primaryKey().notNull(),
+    code: varchar('code', { length: 255 }).notNull(),
+    price: numeric('price').notNull(),
+    yearId: integer('year_id')
+      .references(() => vehicleType.id)
+      .notNull(),
+    modelId: integer('model_id')
+      .references(() => vehicleModel.id)
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string' }).$default(() =>
+      new Date().toDateString()
+    ),
+    updatedAt: timestamp('updated_at', { mode: 'string' }).$onUpdate(() =>
+      new Date().toDateString()
+    ),
+  },
+  (table) => ({
+    uniqPrice: unique().on(table.modelId, table.yearId),
+  })
+);
 
 export const pricelistRelations = relations(pricelist, ({ one }) => ({
   year: one(vehicleYear, {

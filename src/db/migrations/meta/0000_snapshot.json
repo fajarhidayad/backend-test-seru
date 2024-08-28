@@ -1,5 +1,5 @@
 {
-  "id": "f3ac64c1-2ec3-4c00-9d8c-f33c80edf5dd",
+  "id": "6a605bb5-15ba-4b98-80d6-216f6d0152c5",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -300,15 +300,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "vehicle_type_name_unique": {
-          "name": "vehicle_type_name_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
-        }
-      }
+      "uniqueConstraints": {}
     },
     "public.vehicle_year": {
       "name": "vehicle_year",

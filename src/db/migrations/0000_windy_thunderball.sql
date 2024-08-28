@@ -41,8 +41,7 @@ CREATE TABLE IF NOT EXISTS "vehicle_type" (
 	"name" varchar(255) NOT NULL,
 	"brand_id" integer NOT NULL,
 	"created_at" timestamp,
-	"updated_at" timestamp,
-	CONSTRAINT "vehicle_type_name_unique" UNIQUE("name")
+	"updated_at" timestamp
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "vehicle_year" (

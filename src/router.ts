@@ -11,8 +11,17 @@ import {
   getAllVehicleYears,
   getPricelists,
   getVehicleBrandById,
+  getVehicleModelById,
+  getVehicleTypeById,
+  getVehicleYearById,
 } from '@/handler/user.handler';
-import { vehicleBrandSchema } from './dto/vehicle.dto';
+import {
+  pricelistSchema,
+  vehicleBrandSchema,
+  vehicleModelSchema,
+  vehicleTypeSchema,
+  vehicleYearSchema,
+} from './dto/vehicle.dto';
 
 const router = Router();
 
@@ -51,13 +60,13 @@ router.get('/vehicle-brand', getAllVehicleBrand);
 router.get('/vehicle-brand/:id', getVehicleBrandById);
 
 router.get('/vehicle-type', getAllVehicleTypes);
-router.get('/vehicle-type/:id', () => {});
+router.get('/vehicle-type/:id', getVehicleTypeById);
 
 router.get('/vehicle-model', getAllVehicleModels);
-router.get('/vehicle-model/:id', () => {});
+router.get('/vehicle-model/:id', getVehicleModelById);
 
 router.get('/vehicle-year', getAllVehicleYears);
-router.get('/vehicle-year/:id', () => {});
+router.get('/vehicle-year/:id', getVehicleYearById);
 
 router.get('/pricelist', getPricelists);
 
@@ -70,31 +79,91 @@ router.get('/pricelist', getPricelists);
 // Middleware check for admin
 router.use(isAdminMiddleware);
 
+/**
+ * GET users route
+ */
 router.get('/users', asyncHandler(adminRoute.getAllUsers));
 router.get('/users/:id', asyncHandler(adminRoute.getUserById));
 
+/**
+ * Vehicle brand routes
+ */
 router.post(
   '/vehicle-brand',
   validateBody(vehicleBrandSchema),
   asyncHandler(adminRoute.createVehicleBrand)
 );
-router.put('/vehicle-brand/:id', () => {});
-router.delete('/vehicle-brand/:id', () => {});
+router.put(
+  '/vehicle-brand/:id',
+  validateBody(vehicleBrandSchema),
+  asyncHandler(adminRoute.updateVehicleBrand)
+);
+router.delete(
+  '/vehicle-brand/:id',
+  asyncHandler(adminRoute.deleteVehicleBrand)
+);
 
-router.post('/vehicle-type', () => {});
-router.put('/vehicle-type/:id', () => {});
-router.delete('/vehicle-type/:id', () => {});
+/**
+ * Vehicle type routes
+ */
+router.post(
+  '/vehicle-type',
+  validateBody(vehicleTypeSchema),
+  asyncHandler(adminRoute.createVehicleType)
+);
+router.put(
+  '/vehicle-type/:id',
+  validateBody(vehicleTypeSchema),
+  asyncHandler(adminRoute.updateVehicleType)
+);
+router.delete('/vehicle-type/:id', asyncHandler(adminRoute.deleteVehicleType));
 
-router.post('/vehicle-model', () => {});
-router.put('/vehicle-model/:id', () => {});
-router.delete('/vehicle-model/:id', () => {});
+/**
+ * Vehicle model routes
+ */
+router.post(
+  '/vehicle-model',
+  validateBody(vehicleModelSchema),
+  asyncHandler(adminRoute.createVehicleModel)
+);
+router.put(
+  '/vehicle-model/:id',
+  validateBody(vehicleModelSchema),
+  asyncHandler(adminRoute.updateVehicleModel)
+);
+router.delete(
+  '/vehicle-model/:id',
+  asyncHandler(adminRoute.deleteVehicleModel)
+);
 
-router.post('/vehicle-year', () => {});
-router.put('/vehicle-year/:id', () => {});
-router.delete('/vehicle-year/:id', () => {});
+/**
+ * Vehicle year routes
+ */
+router.post(
+  '/vehicle-year',
+  validateBody(vehicleYearSchema),
+  asyncHandler(adminRoute.createVehicleYear)
+);
+router.put(
+  '/vehicle-year/:id',
+  validateBody(vehicleYearSchema),
+  asyncHandler(adminRoute.updateVehicleYear)
+);
+router.delete('/vehicle-year/:id', asyncHandler(adminRoute.deleteVehicleType));
 
-router.post('/pricelist', () => {});
-router.put('/pricelist/:id', () => {});
-router.delete('/pricelist/:id', () => {});
+/**
+ * Pricelist routes
+ */
+router.post(
+  '/pricelist',
+  validateBody(pricelistSchema),
+  asyncHandler(adminRoute.createPricelist)
+);
+router.put(
+  '/pricelist/:id',
+  validateBody(pricelistSchema),
+  asyncHandler(adminRoute.updatePricelist)
+);
+router.delete('/pricelist/:id', asyncHandler(adminRoute.deletePricelist));
 
 export default router;
