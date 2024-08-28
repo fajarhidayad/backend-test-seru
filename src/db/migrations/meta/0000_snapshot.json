@@ -1,5 +1,5 @@
 {
-  "id": "6a605bb5-15ba-4b98-80d6-216f6d0152c5",
+  "id": "9bb80edc-5965-4e75-882f-fd2f16c89efa",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -81,10 +81,19 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "pricelist_model_id_year_id_unique": {
+          "name": "pricelist_model_id_year_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "model_id",
+            "year_id"
+          ]
+        }
+      }
     },
-    "public.user": {
-      "name": "user",
+    "public.users": {
+      "name": "users",
       "schema": "",
       "columns": {
         "id": {
@@ -135,8 +144,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "user_email_unique": {
-          "name": "user_email_unique",
+        "users_email_unique": {
+          "name": "users_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"
@@ -238,15 +247,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "vehicle_model_name_unique": {
-          "name": "vehicle_model_name_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
-        }
-      }
+      "uniqueConstraints": {}
     },
     "public.vehicle_type": {
       "name": "vehicle_type",

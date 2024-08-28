@@ -33,6 +33,7 @@
     "db:drop": "drizzle-kit drop",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "cross-env DB_MIGRATE=true tsx ./src/db/migrate.ts",
+    "db:seed": "cross-env DB_SEED=true tsx ./src/db/seed.ts",
     "db:studio": "drizzle-kit studio"
   }
 }

@@ -10,6 +10,7 @@ const EnvSchema = z.object({
   DB_NAME: z.string(),
   JWT_SECRET: z.string(),
   DB_MIGRATE: z.coerce.boolean(),
+  DB_SEED: z.coerce.boolean(),
 });
 
 export type EnvSchema = z.infer<typeof EnvSchema>;

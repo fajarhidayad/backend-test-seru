@@ -4,7 +4,8 @@ import pg from 'pg';
 
 export const connection = new pg.Pool({
   connectionString: `postgres://${env.DB_USER}:${env.DB_PASSWORD}@${env.DB_HOST}:${env.DB_PORT}/${env.DB_NAME}`,
-  max: env.DB_MIGRATE ? 1 : undefined,
+  max: env.DB_MIGRATE || env.DB_SEED ? 1 : undefined,
 });
 
 export const db = drizzle(connection);
+export type DB = typeof db;

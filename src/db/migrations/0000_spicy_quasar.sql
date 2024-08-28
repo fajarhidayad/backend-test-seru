@@ -5,10 +5,11 @@ CREATE TABLE IF NOT EXISTS "pricelist" (
 	"year_id" integer NOT NULL,
 	"model_id" integer NOT NULL,
 	"created_at" timestamp,
-	"updated_at" timestamp
+	"updated_at" timestamp,
+	CONSTRAINT "pricelist_model_id_year_id_unique" UNIQUE("model_id","year_id")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "user" (
+CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"email" varchar NOT NULL,
 	"name" varchar(255) NOT NULL,
@@ -16,7 +17,7 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"is_admin" boolean DEFAULT false,
 	"created_at" timestamp,
 	"updated_at" timestamp,
-	CONSTRAINT "user_email_unique" UNIQUE("email")
+	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "vehicle_brand" (
@@ -32,8 +33,7 @@ CREATE TABLE IF NOT EXISTS "vehicle_model" (
 	"name" varchar(255) NOT NULL,
 	"type_id" integer NOT NULL,
 	"created_at" timestamp,
-	"updated_at" timestamp,
-	CONSTRAINT "vehicle_model_name_unique" UNIQUE("name")
+	"updated_at" timestamp
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "vehicle_type" (

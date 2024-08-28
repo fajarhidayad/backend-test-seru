@@ -7,5 +7,10 @@ if (!env.DB_MIGRATE) {
   throw new Error("You must set DB_MIGRATE to 'true' when running migration");
 }
 
-await migrate(db, { migrationsFolder: config.out! });
+try {
+  await migrate(db, { migrationsFolder: config.out! });
+  console.log('Migrate success');
+} catch (error) {
+  console.log(error);
+}
 await connection.end();

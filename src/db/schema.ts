@@ -11,7 +11,7 @@ import {
   unique,
 } from 'drizzle-orm/pg-core';
 
-export const user = pgTable('user', {
+export const user = pgTable('users', {
   id: serial('id').primaryKey().notNull(),
   email: varchar('email').notNull().unique(),
   name: varchar('name', { length: 255 }).notNull(),
